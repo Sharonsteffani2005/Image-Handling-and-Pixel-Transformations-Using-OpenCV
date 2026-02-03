@@ -36,250 +36,273 @@ Split the image (boy.jpg) into B, G, R components and display the channels
 
 ## Ex. No. 01
 
-#### 1. Read the image ('Eagle_in_Flight.jpg') using OpenCV imread() as a grayscale image.
+#### 1. Read the image using OpenCV
 ```python
 import cv2
-import numpy as np
 import matplotlib.pyplot as plt
-img =cv2.imread("Eagle_in_Flight.jpg",cv2.IMREAD_COLOR")
+img = cv2.imread('sharon.jpeg', cv2.IMREAD_COLOR)
+
+```
+
+#### 2. Convert BGR (OpenCV's default) to RGB (Matplotlib's expected color order)
+```python
 img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-```
-
-#### 2. Print the image width, height & Channel.
-```python
 img.shape
 
 ```
 
-#### 3. Display the image using matplotlib imshow().
+#### 3. Display the image using Matplotlib
 ```python
-plt.imshow(img)
+plt.imshow(img_rgb, cmap='viridis')  # You can change 'viridis' to another cmap or use None for RGB images
+plt.title("Original Image")
+plt.axis('off')  # Removes axis ticks and labels
 plt.show()
-img.shape
 ```
 
 #### 4. Save the image as a PNG file using OpenCV imwrite().
 ```python
-img=cv2.imread("Eagle_in_Flight.jpg")
-cv2.imwrite("Eagle.png",img)
+img=cv2.imread("sharon.jpeg")
+cv2.imwrite("sharon.png",img)
 ```
 
 #### 5. Read the saved image above as a color image using cv2.cvtColor().
 ```python
-img=cv2.imread('Eagle.png')
-img_rgb = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+image = cv2.imread('sharon.jpeg')
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 ```
 
-#### 6. Display the Colour image using matplotlib imshow() & Print the image width, height & channel.
+#### 6. Draw a line from top-left to bottom-right 
 ```python
-plt.imshow(img)
+line_img = cv2.line(img_rgb, (0, 0), (768, 600), (255, 0, 0), 2)
+plt.imshow(line_img, cmap='viridis')  
+plt.title("Image with Line")
+plt.axis('off')  
 plt.show()
-img.shape
 ```
 
-#### 7. Crop the image to extract any specific (Eagle alone) object from the image.
+#### 7. Draw a circle at the center of the image.
 ```python
-crop = img_rgb[0:450,200:550] 
-plt.imshow(crop[:,:,::-1])
-plt.title("Cropped Region")
+image = cv2.imread('sharon.jpeg') 
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+img_rgb.shape
+circle_img = cv2.circle(img_rgb,(400,300),150,(255,0,0),10)
+plt.imshow(circle_img, cmap='viridis')  
+plt.title("Image with Circle")
+plt.axis('off')  
+plt.show()
+```
+
+#### 8. Draw a rectangle around  the whole image
+```python
+image = cv2.imread('sharon.jpeg') 
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+img.shape
+rectangle_img = cv2.rectangle(img_rgb, (0, 0), (768, 600), (0, 0, 255), 10)
+plt.imshow(rectangle_img, cmap='viridis')  
+plt.title("Image with Rectangle")
+plt.axis('off')  
+plt.show()
+
+```
+
+#### 9. Add the text "OpenCV Drawing" at the top-left corner of the image.
+```python
+image = cv2.imread('sharon.jpeg') 
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+text_img = cv2.putText(img_rgb, "OpenCV Drawing", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 10)
+plt.imshow(text_img, cmap='viridis')  
+plt.title("Image with Text")
+plt.axis('off')  
+plt.show()
+```
+
+#### 10.Convert the image from RGB to HSV and display it.
+```python
+image = cv2.imread('sharon.jpeg')
+image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+plt.imshow(image_rgb)
+plt.title("Original RGB Image")
+plt.axis("off")
+image_hsv = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2HSV)
+plt.imshow(image_hsv)
+plt.title("HSV Image")
+plt.axis("off")
+```
+
+#### 11. Convert RGB to GRAY
+```python
+image_gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+plt.imshow(image_gray, cmap='gray')
+plt.title("Grayscale Image")
+plt.axis("off")
+```
+
+#### 12. Convert RGB to YCrCb
+```python
+image_ycrcb = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2YCrCb)
+plt.imshow(image_ycrcb)
+plt.title("YCrCb Image")
+plt.axis("off")
+```
+
+#### 13. Convert HSV back to RGB
+```python
+image_hsv_to_rgb = cv2.cvtColor(image_hsv, cv2.COLOR_HSV2RGB)
+plt.imshow(image_hsv_to_rgb)
+plt.title("HSV to RGB Image")
+plt.axis("off")
+```
+
+#### 14. Modify a block of pixels (300x300) to white, starting from (200, 200)
+```python
+image[200:500, 200:500] = [255, 255, 255]
+image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+plt.imshow(image_rgb)
+plt.title("Image with 300x300 White Block")
 plt.axis("off")
 plt.show()
-crop.shape
 ```
 
-#### 8. Resize the image up by a factor of 2x.
+#### 15. Resize the original image to half its size and display it.
 ```python
-res= cv2.resize(crop,(200*2, 200*2))
+image = cv2.imread('sharon.jpeg')
+image.shape
+resized_image = cv2.resize(image, (768 // 2, 600 // 2)) 
+resized_image_rgb = cv2.cvtColor(resized_image, cv2.COLOR_BGR2RGB)
+resized_image_rgb.shape
+plt.imshow(resized_image_rgb)
+plt.title("Resized Image (Half Size)")
+plt.axis("off")
+plt.show()
 ```
 
-#### 9. Flip the cropped/resized image horizontally.
+#### 16. Crop a region of interest (ROI) from the image (e.g., a 100x100 pixel area starting at (50, 50)) and display it.
 ```python
-flip= cv2.flip(res,1)
-plt.imshow(flip[:,:,::-1])
+image = cv2.imread('sharon.jpeg')
+image.shape
+roi = image[50:350, 50:350]
+roi_rgb = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
+plt.imshow(roi_rgb)
+plt.title("Cropped Region of Interest (ROI)")
+plt.axis("off")
+plt.show()
+```
+
+#### 17. Flip the original image horizontally and display it.
+```python
+image = cv2.imread('sharon.jpeg') 
+flipped_horizontally = cv2.flip(image, 1)
+flipped_horizontally_rgb = cv2.cvtColor(flipped_horizontally, cv2.COLOR_BGR2RGB)
+plt.imshow(flipped_horizontally_rgb)
 plt.title("Flipped Horizontally")
 plt.axis("off")
 ```
 
-#### 10. Read in the image ('Apollo-11-launch.jpg').
+#### 18. Flip the original image vertically and display it.
 ```python
-img=cv2.imread(r"C:\Users\admin\Downloads\Apollo-11-launch.jpg",cv2.IMREAD_COLOR)
-img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-img_rgb.shape
-```
-
-#### 11. Add the following text to the dark area at the bottom of the image (centered on the image):
-```python
-text = cv2.putText(img_rgb, "Apollo 11 Saturn V Launch, July 16, 1969", (300, 700),cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)  
-plt.imshow(text, cmap='gray')  
-plt.title("New image")
-plt.show()  
-```
-
-#### 12. Draw a magenta rectangle that encompasses the launch tower and the rocket.
-```python
-rcol= (255, 0, 255)
-cv2.rectangle(img_rgb, (400, 100), (800, 650), rcol, 3)  
-```
-
-#### 13. Display the final annotated image.
-```python
-plt.title("Annotated image")
-plt.imshow(img_rgb)
-plt.show()
-```
-
-#### 14. Read the image ('Boy.jpg').
-```python
-img =cv2.imread(r"C:\Users\admin\Downloads\boy.jpg",cv2.IMREAD_COLOR)
-img_rgb= cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-```
-
-#### 15. Adjust the brightness of the image.
-```python
-m = np.ones(img_rgb.shape, dtype="uint8") * 50
-```
-
-#### 16. Create brighter and darker images.
-```python
-img_brighter = cv2.add(img, m)
-img_darker = cv2.subtract(img, m)
-```
-
-#### 17. Display the images (Original Image, Darker Image, Brighter Image).
-```python
-plt.figure(figsize=(10,5))
-plt.subplot(1,3,1), plt.imshow(img_rgb), plt.title("Original Image"), plt.axis("off")
-plt.subplot(1,3,2), plt.imshow(img_brighter), plt.title("Brighter Image"), plt.axis("off")
-plt.subplot(1,3,3), plt.imshow(img_darker), plt.title("Darker Image"), plt.axis("off")
-plt.show()
-```
-
-#### 18. Modify the image contrast.
-```python
-matrix1 = np.ones(img_rgb.shape, dtype="float32") * 1.1
-matrix2 = np.ones(img_rgb.shape, dtype="float32") * 1.2
-img_higher1 = cv2.multiply(img.astype("float32"), matrix1).clip(0,255).astype("uint8")
-img_higher2 = cv2.multiply(img.astype("float32"), matrix2).clip(0,255).astype("uint8")
-```
-
-#### 19. Display the images (Original, Lower Contrast, Higher Contrast).
-```python
-plt.figure(figsize=(10,5))
-plt.subplot(1,3,1), plt.imshow(img), plt.title("Original Image"), plt.axis("off")
-plt.subplot(1,3,2), plt.imshow(img_higher1), plt.title("Higher Contrast (1.1x)"), plt.axis("off")
-plt.subplot(1,3,3), plt.imshow(img_higher2), plt.title("Higher Contrast (1.2x)"), plt.axis("off")
-plt.show()
-```
-
-#### 20. Split the image (boy.jpg) into the B,G,R components & Display the channels.
-```python
-b, g, r = cv2.split(img)
-plt.figure(figsize=(10,5))
-plt.subplot(1,3,1), plt.imshow(b, cmap='gray'), plt.title("Blue Channel"), plt.axis("off")
-plt.subplot(1,3,2), plt.imshow(g, cmap='gray'), plt.title("Green Channel"), plt.axis("off")
-plt.subplot(1,3,3), plt.imshow(r, cmap='gray'), plt.title("Red Channel"), plt.axis("off")
-plt.show()
-```
-
-#### 21. Merged the R, G, B , displays along with the original image
-```python
-b, g, r = cv2.split(img)
-plt.figure(figsize=(10,5))
-plt.subplot(1,3,1), plt.imshow(b, cmap='gray'), plt.title("Blue Channel"), plt.axis("off")
-plt.subplot(1,3,2), plt.imshow(g, cmap='gray'), plt.title("Green Channel"), plt.axis("off")
-plt.subplot(1,3,3), plt.imshow(r, cmap='gray'), plt.title("Red Channel"), plt.axis("off")
-plt.show()
-```
-
-#### 22. Split the image into the H, S, V components & Display the channels.
-```python
-hsv_img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
-h, s, v = cv2.split(hsv_img)
-plt.figure(figsize=(10,5))
-plt.subplot(1,3,1), plt.imshow(h, cmap='gray'), plt.title("Hue Channel"), plt.axis("off")
-plt.subplot(1,3,2), plt.imshow(s, cmap='gray'), plt.title("Saturation Channel"), plt.axis("off")
-plt.subplot(1,3,3), plt.imshow(v, cmap='gray'), plt.title("Value Channel"), plt.axis("off")
-plt.show()
-```
-#### 23. Merged the H, S, V, displays along with original image.
-```python
-merged_hsv = cv2.cvtColor(cv2.merge([h, s, v]), cv2.COLOR_HSV2RGB)
-combined = np.concatenate((img_rgb, merged_hsv), axis=1)
-plt.figure(figsize=(10, 5))
-plt.imshow(combined)
-plt.title("Original Image  &  Merged HSV Image")
+flipped_vertically = cv2.flip(image, 0)
+flipped_vertically_rgb = cv2.cvtColor(flipped_vertically, cv2.COLOR_BGR2RGB)
+plt.imshow(flipped_vertically_rgb)
+plt.title("Flipped Vertically")
 plt.axis("off")
-plt.show()
 ```
+
 
 ## Output:
- 1. Read and Display an Image.
-<img width="710" height="594" alt="image" src="https://github.com/user-attachments/assets/157308d2-87d5-4897-aff4-e97a715b6079" />
+ 1. Read the image using OpenCV
+
+ 
+ <img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/033b6aff-4cc7-4f5d-8c58-17f6ba941562" />
 
 
 
-2. Display the image using matplotlib imshow().
-
-   
-<img width="710" height="593" alt="image" src="https://github.com/user-attachments/assets/4f612dd1-c38d-4ddc-aeb9-12e345457abb" />
 
 
+2.  Draw a line from top-left to bottom-right
 
-3)Resize the image up by a factor of 2x.
 
-
-<img width="307" height="411" alt="download" src="https://github.com/user-attachments/assets/4c7bc193-8ec4-4bc1-823d-d62dc5564399" />
-
-4)Flipped Horizontally
-
-<img width="714" height="594" alt="image" src="https://github.com/user-attachments/assets/fb77c703-0bb1-4214-ab27-b0fc71becd97" />
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/954918a4-a910-4d3a-a82d-1d539e0ffbf2" />
 
 
 
-5)New image.
+3)Draw a circle at the center of the image.
 
 
-<img width="552" height="345" alt="download" src="https://github.com/user-attachments/assets/c437d153-3671-4573-82f6-adfba322321b" />
-
-6)Annotated image.
-
-<img width="552" height="345" alt="download" src="https://github.com/user-attachments/assets/d12c4c3c-a6b9-48f0-b95e-d1a34c528e26" />
-
-7)Brightness.
-
-<img width="827" height="244" alt="420662698-f34966ee-21f9-4441-bdd4-36c3da71b89d" src="https://github.com/user-attachments/assets/9f048762-76f8-4f7f-8e29-3afc2cff5714" />
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/bd584f17-2014-4ad3-b6bd-499e604d6886" />
 
 
 
-8)Contrast.
 
-<img width="794" height="213" alt="download" src="https://github.com/user-attachments/assets/05559982-b002-47fe-a85a-24e870888d72" />
+4)Draw a rectangle around  the whole image
 
 
-9)BGR Channel.
-
-<img width="794" height="213" alt="download" src="https://github.com/user-attachments/assets/22f8d9bd-0f4f-4032-b813-804525e289a4" />
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/53ffcbbe-31ce-4c56-90eb-99125c8cec45" />
 
 
 
-10)Hue Channel.
+5)Add the text "OpenCV Drawing" at the top-left corner of the image.
 
 
-<img width="794" height="213" alt="download" src="https://github.com/user-attachments/assets/1b27d2ef-5eec-4f7f-8dd9-bfeb24f95248" />
-
-11) Merged HSV Image.
-
-<img width="794" height="332" alt="download" src="https://github.com/user-attachments/assets/4e047572-4a8d-4c30-9c78-15fb3cc5c21f" />
-
-12)Merge the R, G, B channels and display:
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/ca4f1165-e74e-40ae-8be6-eea9f090e9ab" />
 
 
 
-<img width="406" height="327" alt="421166243-6db4d2a2-8b21-43e5-976a-8f199eebc8cc" src="https://github.com/user-attachments/assets/bdd1ffcf-5b53-42e4-8645-d63c18f80c7d" />
+6)Convert the image from RGB to HSV and display it.
+
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/e3fc136c-ac50-4fd5-909d-cb6752a9ab8a" />
+
+
+7) Convert the image from RGB to GRAY and display it. 
+
+
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/ffa11fc0-49f1-4596-9274-78c64308dd23" />
+
+
+
+
+8) Convert the image from RGB to YCrCb and display it. 
+
+
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/3bb0d498-3d4c-4eb2-b97b-4e646ddd7834" />
+
+
+
+9)Convert the HSV image back to RGB and display it.
+
+
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/2856ea25-3839-44a8-a205-991f074b1f15" />
+
+
+10) Modify the color of the pixel at (200, 200) to white.
+
+
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/38b49f63-44a6-4c56-91d2-ef4b89b5cfb4" />
+
+
+11)  Resize the original image to half its size and display it.
+
+    
+<img width="493" height="409" alt="download" src="https://github.com/user-attachments/assets/e3a45bc6-f04a-4890-bc33-dfb5961c76aa" />
+
+
+12)Crop a region of interest (ROI) from the image (e.g., a 100x100 pixel area starting at (50, 50)) and display it.
+
+
+<img width="389" height="409" alt="download" src="https://github.com/user-attachments/assets/dfbf1f9a-1531-486c-8d1b-bae93e8327d9" />
+
+
+
+
+13) Flip the original image horizontally and display it.
+
+
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/473cff69-993e-410c-ae78-f1a6798a8826" />
+
+14) Flip the original image vertically and display it.
+
+<img width="297" height="409" alt="download" src="https://github.com/user-attachments/assets/e8ccb941-4251-4f80-9555-31ee2f96bbfb" />
 
 
 
 ## Result:
 Thus, the images were read, displayed, brightness and contrast adjustments were made, and bitwise operations were performed successfully using the Python program.
-
