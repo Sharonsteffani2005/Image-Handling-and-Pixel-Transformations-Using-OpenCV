@@ -1,4 +1,7 @@
 # Image-Handling-and-Pixel-Transformations-Using-OpenCV 
+## Program Developed By:
+### NAME: SHARON STEFFANI.F
+### REG NO: 212223110049
 
 ## AIM:
 Write a Python program using OpenCV that performs the following tasks:
@@ -29,11 +32,6 @@ Display the original, lower contrast, and higher contrast images.
 
 ### Step 5:
 Split the image (boy.jpg) into B, G, R components and display the channels
-
-## Program Developed By:
-- **Name:** SHARON STEFFANI F
-- **Register Number:** 212223110049
-
 ## Ex. No. 01
 
 #### 1. Read the image using OpenCV
